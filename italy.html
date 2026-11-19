@@ -31,7 +31,104 @@
 <h1>Rome, Italy</h1>
 <p>Rome is one of the most historic cities in the world. Landmarks like the Colosseum, the Pantheon, and Vatican City sit within a short distance of each other, so you can walk through thousands of years of history in one day.</p>
 <p>I want to see Rome for the architecture and the food, from fresh pasta to gelato on every corner.</p>
+<div class="showcase">
+<!-- HTML: one scenic illustrated card for Rome and a hidden panel with activity links -->
+<div class="showcase-box">
+  <button class="showcase-card" id="showcase-card" aria-label="Rome, Italy: show things to do">
+    <svg viewBox="0 0 200 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="sc-sky-rome" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7cc4f0"/>
+          <stop offset="1" stop-color="#e7f6ff"/>
+        </linearGradient>
+      </defs>
+      <rect width="200" height="240" fill="url(#sc-sky-rome)"/>
+      <circle cx="35" cy="40" r="16" fill="#fff6c9"/>
+      <rect x="25" y="100" width="150" height="105" fill="#d9b98a"/>
+      <rect x="20" y="96" width="160" height="8" fill="#c29d6a"/>
+      <polygon points="130,96 180,96 180,125 150,125" fill="#7cc4f0"/>
+      <g fill="#6b4f2d">
+        <rect x="35" y="112" width="12" height="20" rx="6"/><rect x="55" y="112" width="12" height="20" rx="6"/>
+        <rect x="75" y="112" width="12" height="20" rx="6"/><rect x="95" y="112" width="12" height="20" rx="6"/>
+        <rect x="115" y="112" width="12" height="20" rx="6"/>
+        <rect x="35" y="140" width="12" height="20" rx="6"/><rect x="55" y="140" width="12" height="20" rx="6"/>
+        <rect x="75" y="140" width="12" height="20" rx="6"/><rect x="95" y="140" width="12" height="20" rx="6"/>
+        <rect x="115" y="140" width="12" height="20" rx="6"/><rect x="135" y="140" width="12" height="20" rx="6"/>
+        <rect x="155" y="140" width="12" height="20" rx="6"/>
+        <rect x="35" y="168" width="12" height="28" rx="6"/><rect x="55" y="168" width="12" height="28" rx="6"/>
+        <rect x="75" y="168" width="12" height="28" rx="6"/><rect x="95" y="168" width="12" height="28" rx="6"/>
+        <rect x="115" y="168" width="12" height="28" rx="6"/><rect x="135" y="168" width="12" height="28" rx="6"/>
+        <rect x="155" y="168" width="12" height="28" rx="6"/>
+      </g>
+      <rect y="205" width="200" height="35" fill="#8a9a5b"/>
+      <rect y="205" width="200" height="6" fill="#a8b57a"/>
+    </svg>
+    <span class="showcase-label">Rome, Italy: click for things to do</span>
+  </button>
+  <div class="showcase-panel" id="showcase-panel" hidden>
+    <button class="showcase-close" id="showcase-close" aria-label="Close panel">&times;</button>
+    <div class="showcase-title" id="showcase-title"></div>
+    <div class="showcase-sub">Popular things to do (opens a Google search in a new tab):</div>
+    <ul class="showcase-links" id="showcase-links"></ul>
+  </div>
+</div>
 
+<!-- CSS: styles the card, the hover zoom, and the pop-up panel. Every rule starts with .showcase -->
+<style>
+  .showcase-box { position: relative; max-width: 420px; margin: 20px auto; font-family: Georgia, "Times New Roman", serif; color: #1a095c; }
+  .showcase-card { display: block; width: 100%; border: 3px solid #1a095c; border-radius: 12px; padding: 0; background: #e7f6ff; cursor: pointer; overflow: hidden; font-family: inherit; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .showcase-card:hover, .showcase-card:focus { transform: scale(1.03); box-shadow: 0 6px 14px rgba(26, 9, 92, 0.35); outline: none; }
+  .showcase-card svg { display: block; width: 100%; height: 300px; }
+  .showcase-label { display: block; padding: 10px 6px; font-size: 16px; font-weight: bold; color: #e7f6ff; background: #1a095c; }
+  .showcase-panel { position: absolute; top: 0; left: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 20px; overflow-y: auto; background: #e7f6ff; border: 3px solid #1a095c; border-radius: 12px; }
+  .showcase-panel[hidden] { display: none; }
+  .showcase-close { position: absolute; top: 8px; right: 12px; border: none; background: #1a095c; color: #e7f6ff; width: 32px; height: 32px; border-radius: 50%; font-size: 20px; line-height: 1; cursor: pointer; }
+  .showcase-title { font-size: 24px; font-weight: bold; margin: 0 40px 6px 0; }
+  .showcase-sub { font-size: 15px; margin-bottom: 12px; }
+  .showcase-links { list-style: none; margin: 0; padding: 0; }
+  .showcase-links li { margin-bottom: 10px; }
+  .showcase-links a { display: block; padding: 10px 14px; background: #1a095c; color: #e7f6ff; text-decoration: none; border-radius: 8px; font-size: 16px; }
+  .showcase-links a:hover { opacity: 0.85; }
+  @media (max-width: 500px) { .showcase-card svg { height: 230px; } .showcase-title { font-size: 20px; } }
+</style>
+
+<!-- JavaScript: opens the panel with Rome's activity links; closes with the X button or Escape -->
+<script>
+  (function () {
+    var city = {
+      name: "Rome, Italy",
+      activities: [
+        ["Tour the Colosseum", "Colosseum tickets Rome"],
+        ["Explore the Vatican Museums", "Vatican Museums Rome"],
+        ["Toss a coin in the Trevi Fountain", "Trevi Fountain Rome"],
+        ["Walk through the Roman Forum", "Roman Forum Rome tour"]
+      ]
+    };
+    var panel = document.getElementById("showcase-panel");
+    var title = document.getElementById("showcase-title");
+    var list = document.getElementById("showcase-links");
+    function openPanel() {
+      title.textContent = city.name;
+      list.innerHTML = "";
+      city.activities.forEach(function (item) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.textContent = item[0];
+        a.href = "https://www.google.com/search?q=" + encodeURIComponent(item[1]);
+        a.target = "_blank";
+        a.rel = "noopener";
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+      panel.hidden = false;
+    }
+    function closePanel() { panel.hidden = true; }
+    document.getElementById("showcase-card").addEventListener("click", openPanel);
+    document.getElementById("showcase-close").addEventListener("click", closePanel);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePanel(); });
+  })();
+</script>
+</div>
 <!-- Footer: Caden Young -->
 <footer>Built by Caden Young &middot; BMIS 235</footer>
 
