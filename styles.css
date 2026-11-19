@@ -62,8 +62,3 @@ footer {
 nav a:hover img {
     opacity: 0.75;
 }
-nav {
-    background-color: #a9c6e3;
-    padding: 14px;
-    text-align: center;
-}
