@@ -19,7 +19,7 @@ body {
 
 /* the menu at the top of every page */
 nav {
-    background-color: #0f52ba;
+    background-color: #235284;
     padding: 14px;
     text-align: center;
 }
@@ -63,7 +63,7 @@ nav a:hover img {
     opacity: 0.75;
 }
 nav {
-    background-color: #0f52ba;
+    background-color: #235284;
     padding: 14px;
     text-align: center;
 }
