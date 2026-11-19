@@ -31,8 +31,9 @@ nav img {
     height: 50px;
     margin: 4px;
     vertical-align: middle;
-   border-radius: 8px;
+    clip-path: inset(3px round 8px);
 }
+
 
 /* no underline or border around the image links */
 nav a {
