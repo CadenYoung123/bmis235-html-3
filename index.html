@@ -37,7 +37,193 @@
      This box is empty on purpose. In Part 7 you paste an interactive
      graphic BETWEEN the opening <div> and the closing </div> below.
      ===================================================================== -->
+<div class="showcase">
+  <!-- HTML: a simplified drawn map with three clickable pins, plus an info box that updates when a pin is chosen -->
+<div class="showcase-mapwrap">
+  <svg class="showcase-map" viewBox="250 28 400 230" role="img" aria-label="Map showing Valencia, Rome and Guangzhou">
+    <rect x="250" y="28" width="400" height="230" class="showcase-ocean"/>
 
+    <g class="showcase-land">
+      <!-- Eurasia -->
+      <path d="M349 108 L342 106 L342 94 L356 93 L358 88 L351 83 L364 78 L370 74 L376 66 L370 60 L390 42 L416 38 L450 44 L480 42 L520 34 L580 28 L640 36 L660 56 L630 94 L618 110 L604 120 L596 132 L586 136 L576 144 L578 156 L570 162 L566 176 L560 170 L556 156 L548 146 L536 136 L520 150 L514 164 L506 146 L500 136 L492 130 L474 128 L460 120 L456 122 L464 132 L478 136 L464 148 L446 154 L438 138 L430 124 L428 118 L430 112 L432 107 L420 107 L414 106 L412 100 L406 100 L400 100 L386 89 L376 92 L366 94 L366 96 L360 102 L359 104 L356 106 Z"/>
+      <!-- Italy -->
+      <path d="M385 92 L392 98 L396 100 L393 104 L391 100 L384 96 Z"/>
+      <!-- Africa -->
+      <path d="M349 108 L380 106 L382 114 L400 116 L424 118 L428 124 L434 140 L446 156 L462 156 L440 186 L440 210 L430 228 L424 238 L400 250 L396 244 L384 214 L386 192 L378 172 L352 170 L344 171 L334 162 L326 150 L326 138 L340 122 L342 116 L348 108 Z"/>
+      <!-- British Isles, Japan, Sumatra, Borneo, Madagascar -->
+      <path d="M350 80 L363 78 L360 74 L356 68 L350 63 L348 68 L354 72 L350 76 Z"/>
+      <path d="M340 76 L348 76 L348 71 L340 72 Z"/>
+      <path d="M620 118 L630 112 L640 106 L644 96 L650 92 L642 100 L638 112 L626 120 Z"/>
+      <path d="M550 170 L572 192 L564 188 L556 176 Z"/>
+      <ellipse cx="588" cy="180" rx="14" ry="12"/>
+      <ellipse cx="454" cy="218" rx="5" ry="14"/>
+    </g>
+
+    <!-- dashed line connecting the three cities -->
+    <path class="showcase-route" d="M359 101 L385 96 Q 490 60 586 134"/>
+
+    <!-- pins: click or press Enter on one to show its info -->
+    <g class="showcase-pin" data-city="valencia" tabindex="0" role="button" aria-label="Valencia, Spain">
+      <circle class="showcase-pulse" cx="359" cy="101" r="4"/>
+      <circle class="showcase-hit" cx="359" cy="101" r="11"/>
+      <circle class="showcase-dot" cx="359" cy="101" r="4.5"/>
+      <text class="showcase-pinlabel" x="351" y="106" text-anchor="end">Valencia</text>
+    </g>
+    <g class="showcase-pin" data-city="rome" tabindex="0" role="button" aria-label="Rome, Italy">
+      <circle class="showcase-pulse" cx="385" cy="96" r="4"/>
+      <circle class="showcase-hit" cx="385" cy="96" r="11"/>
+      <circle class="showcase-dot" cx="385" cy="96" r="4.5"/>
+      <text class="showcase-pinlabel" x="392" y="88" text-anchor="start">Rome</text>
+    </g>
+    <g class="showcase-pin" data-city="guangzhou" tabindex="0" role="button" aria-label="Guangzhou, China">
+      <circle class="showcase-pulse" cx="586" cy="134" r="4"/>
+      <circle class="showcase-hit" cx="586" cy="134" r="11"/>
+      <circle class="showcase-dot" cx="586" cy="134" r="4.5"/>
+      <text class="showcase-pinlabel" x="580" y="124" text-anchor="end">Guangzhou</text>
+    </g>
+  </svg>
+
+  <div class="showcase-info" id="showcase-info" aria-live="polite">
+    <div class="showcase-name">Where are we going?</div>
+    <div class="showcase-fact">Click a pin on the map to learn about each city.</div>
+  </div>
+</div>
+
+<!-- CSS: sizes the map, colors the land and ocean, animates the pins, and styles the info box. Every rule starts with .showcase -->
+<style>
+  .showcase-mapwrap {
+    max-width: 560px;
+    margin: 20px auto;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #1a095c;
+  }
+  .showcase-map {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 3px solid #1a095c;
+    border-radius: 12px;
+    background: #e7f6ff;
+  }
+  .showcase-ocean { fill: #e7f6ff; }
+  .showcase-land path, .showcase-land ellipse { fill: #c9c3e8; stroke: #1a095c; stroke-width: 1; stroke-linejoin: round; }
+  .showcase-route { fill: none; stroke: #1a095c; stroke-width: 1.2; stroke-dasharray: 3 3; opacity: 0.5; }
+  .showcase-pin { cursor: pointer; outline: none; }
+  .showcase-hit { fill: transparent; }
+  .showcase-dot { fill: #ffd966; stroke: #1a095c; stroke-width: 2; transition: fill 0.2s ease; }
+  .showcase-pulse {
+    fill: #1a095c;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: showcase-pulse 2s ease-out infinite;
+  }
+  .showcase-pin:hover .showcase-dot, .showcase-pin:focus .showcase-dot { fill: #ffffff; }
+  .showcase-pin.showcase-selected .showcase-dot { fill: #1a095c; stroke: #ffd966; }
+  .showcase-pinlabel {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 11px;
+    font-weight: bold;
+    fill: #1a095c;
+    stroke: #e7f6ff;
+    stroke-width: 3px;
+    paint-order: stroke;
+    pointer-events: none;
+  }
+  @keyframes showcase-pulse {
+    from { transform: scale(1); opacity: 0.6; }
+    to { transform: scale(3.2); opacity: 0; }
+  }
+  .showcase-info {
+    margin-top: 12px;
+    padding: 14px 16px;
+    min-height: 90px;
+    box-sizing: border-box;
+    background: #e7f6ff;
+    border: 3px solid #1a095c;
+    border-radius: 12px;
+  }
+  .showcase-name { font-size: 22px; font-weight: bold; margin-bottom: 6px; }
+  .showcase-fact { font-size: 16px; line-height: 1.5; }
+  .showcase-visit {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #1a095c;
+    color: #e7f6ff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+  .showcase-visit:hover { opacity: 0.85; }
+  @media (max-width: 500px) {
+    .showcase-name { font-size: 19px; }
+    .showcase-fact { font-size: 15px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .showcase-pulse { animation: none; opacity: 0; }
+  }
+</style>
+
+<!-- JavaScript: when a pin is clicked (or Enter/Space is pressed), fills the info box with that city's name, fun fact and a link to its page -->
+<script>
+  (function () {
+    var cities = {
+      valencia: {
+        name: "Valencia, Spain",
+        fact: "Valencia is the birthplace of paella, and its futuristic City of Arts and Sciences sits in a former riverbed that was turned into a park.",
+        page: "spain.html"
+      },
+      rome: {
+        name: "Rome, Italy",
+        fact: "The Colosseum in Rome is nearly 2,000 years old and once hosted tens of thousands of spectators for gladiator games and public events.",
+        page: "italy.html"
+      },
+      guangzhou: {
+        name: "Guangzhou, China",
+        fact: "Guangzhou's Canton Tower is about 600 meters tall, and the city is the home of Cantonese cuisine and the dim sum tradition.",
+        page: "china.html"
+      }
+    };
+
+    var pins = document.querySelectorAll(".showcase-pin");
+    var info = document.getElementById("showcase-info");
+
+    function select(key) {
+      var city = cities[key];
+      pins.forEach(function (pin) {
+        pin.classList.toggle("showcase-selected", pin.getAttribute("data-city") === key);
+      });
+
+      info.innerHTML = "";
+      var name = document.createElement("div");
+      name.className = "showcase-name";
+      name.textContent = city.name;
+      var fact = document.createElement("div");
+      fact.className = "showcase-fact";
+      fact.textContent = city.fact;
+      var link = document.createElement("a");
+      link.className = "showcase-visit";
+      link.href = city.page;
+      link.textContent = "Visit the " + city.name.split(",")[0] + " page";
+      info.appendChild(name);
+      info.appendChild(fact);
+      info.appendChild(link);
+    }
+
+    pins.forEach(function (pin) {
+      pin.addEventListener("click", function () {
+        select(pin.getAttribute("data-city"));
+      });
+      pin.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          select(pin.getAttribute("data-city"));
+        }
+      });
+    });
+  })();
+</script>
+</div>
 <!-- Footer: Caden Young -->
 <footer>Built by Caden Young &middot; BMIS 235</footer>
 
