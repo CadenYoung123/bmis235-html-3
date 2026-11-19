@@ -47,9 +47,9 @@ h1 {
 
 p {
     max-width: 600px;
-    margin: 20px auto;
+    margin: 20px auto 28px auto;
     font-size: 18px;
-    line-height: 1.5;
+    line-height: 1.8;
 }
 
 footer {
@@ -57,4 +57,7 @@ footer {
     font-size: 14px;
     color: #777777;
     margin-top: 40px;
+}
+nav a:hover img {
+    opacity: 0.75;
 }
